@@ -1,83 +1,83 @@
--- [[ BANANA HUB x REDZ V3 - FIX LOADING NO MENU ]] --
+-- [[ KAITO HUB - DARK GREY PREMIUM EDITION ]] --
+-- [[ STYLE: BLACK & GREY - NO KEY - FULL BANANA SOUL ]] --
+
 repeat task.wait() until game:IsLoaded()
 
+-- [[ 1. LOADING SCREEN PHONG CÁCH XÁM ĐEN ]] --
 local CoreGui = game:GetService("CoreGui")
-
--- [[ 1. LOADING SCREEN CỰC NHANH ]] --
 local Screen = Instance.new("ScreenGui", CoreGui)
 local Main = Instance.new("Frame", Screen)
-Main.Size, Main.Position = UDim2.new(0, 350, 0, 120), UDim2.new(0.5, -175, 0.5, -60)
-Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Main.Size, Main.Position = UDim2.new(0, 320, 0, 100), UDim2.new(0.5, -160, 0.5, -50)
+Main.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Xám đậm
 Instance.new("UICorner", Main)
-
-local BarBack = Instance.new("Frame", Main)
-BarBack.Size, BarBack.Position = UDim2.new(0.8, 0, 0, 10), UDim2.new(0.1, 0, 0.65, 0)
-BarBack.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-
-local Bar = Instance.new("Frame", BarBack)
-Bar.Size, Bar.BackgroundColor3 = UDim2.new(0, 0, 1, 0), Color3.fromRGB(255, 255, 0)
+local Stroke = Instance.new("UIStroke", Main)
+Stroke.Thickness, Stroke.Color = 2, Color3.fromRGB(80, 80, 80) -- Viền xám sáng
 
 local Txt = Instance.new("TextLabel", Main)
-Txt.Size, Txt.Text = UDim2.new(1, 0, 0, 50), "ĐANG KÍCH HOẠT REDZ V3..."
-Txt.TextColor3, Txt.BackgroundTransparency = Color3.new(1, 1, 0), 1
+Txt.Size, Txt.Text = UDim2.new(1, 0, 0, 50), "KAITO HUB - DARK EDITION"
+Txt.TextColor3, Txt.BackgroundTransparency = Color3.fromRGB(200, 200, 200), 1
 Txt.Font = Enum.Font.GothamBold
 
--- Hiệu ứng load giả lập để đợi script gốc
-for i = 1, 100 do
-    task.wait(0.01)
-    Bar.Size = UDim2.new(i/100, 0, 1, 0)
-end
+local BarBack = Instance.new("Frame", Main)
+BarBack.Size, BarBack.Position = UDim2.new(0.8, 0, 0, 5), UDim2.new(0.1, 0, 0.7, 0)
+BarBack.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+local Bar = Instance.new("Frame", BarBack)
+Bar.Size, Bar.BackgroundColor3 = UDim2.new(0, 0, 1, 0), Color3.fromRGB(150, 150, 150) -- Thanh load xám trắng
+
+for i = 1, 100 do task.wait(0.005) Bar.Size = UDim2.new(i/100, 0, 1, 0) end
 Screen:Destroy()
 
--- [[ 2. LOAD THẲNG REDZ V3 (FULL CHỨC NĂNG) ]] --
-local Settings = {
-    JoinTeam = "Pirates",
-    Translator = true,
+-- [[ 2. KHỞI TẠO UI KAITO PREMIUM (XÁM ĐEN) ]] --
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Window = Fluent:CreateWindow({
+    Title = "KAITO HUB",
+    SubTitle = "Dark Grey Premium",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false,
+    Theme = "Darker", -- Chế độ tối nhất của Fluent
+    MinimizeKey = Enum.KeyCode.RightControl
+})
+
+-- Đổi màu chủ đạo (Accent) sang Xám Trắng cho sang
+Fluent.Options.AccentColor = Color3.fromRGB(180, 180, 180)
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main Farm", Icon = "home" }),
+    Sea = Window:AddTab({ Title = "Sea Event", Icon = "skull" }),
+    Music = Window:AddTab({ Title = "Music / Misic", Icon = "music" }),
+    Config = Window:AddTab({ Title = "Config", Icon = "settings" })
 }
 
--- Gọi script RedZ gốc ngay lập tức
+-- --- TAB MUSIC (GIỮ NGUYÊN TÍNH NĂNG) ---
+local Sound = Instance.new("Sound", game.Workspace)
+Tabs.Music:AddTextBox("IDNhac", {
+    Title = "Dán ID Nhạc",
+    Callback = function(ID)
+        Sound.SoundId = "rbxassetid://"..ID
+        Sound:Play()
+    end
+})
+Tabs.Music:AddButton({Title = "Nhạc Sàn Remix", Callback = function() Sound.SoundId = "rbxassetid://1837871155" Sound:Play() end})
+Tabs.Music:AddButton({Title = "Dừng Nhạc", Callback = function() Sound:Stop() end})
+
+-- --- LOAD FULL LOGIC ALOALOALO322 NGẦM ---
 task.spawn(function()
     pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/newredzv3/Scripts/refs/heads/main/main.luau"))(Settings)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
     end)
 end)
 
--- [[ 3. TAB NHẠC RIÊNG (CHO ĐẠI CA QUẨY) ]] --
-local MusicGui = Instance.new("ScreenGui", CoreGui)
-local MFrame = Instance.new("Frame", MusicGui)
-MFrame.Size, MFrame.Position = UDim2.new(0, 220, 0, 130), UDim2.new(1, -230, 0.5, -65)
-MFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-MFrame.Visible = false
-Instance.new("UICorner", MFrame)
-Instance.new("UIStroke", MFrame).Color = Color3.new(1,1,0)
-
-local Sound = Instance.new("Sound", game.Workspace)
-local Play = Instance.new("TextButton", MFrame)
-Play.Size, Play.Position = UDim2.new(0.9, 0, 0, 40), UDim2.new(0.05, 0, 0.1, 0)
-Play.Text = "QUẨY NHẠC SÀN"
-Play.BackgroundColor3 = Color3.fromRGB(40,40,0)
-Play.TextColor3 = Color3.new(1,1,1)
-
-Play.MouseButton1Click:Connect(function()
-    Sound.SoundId = "rbxassetid://1837871155"
-    Sound:Play()
-end)
-
-local Stop = Instance.new("TextButton", MFrame)
-Stop.Size, Stop.Position = UDim2.new(0.9, 0, 0, 40), UDim2.new(0.05, 0, 0.55, 0)
-Stop.Text = "DỪNG NHẠC"
-Stop.MouseButton1Click:Connect(function() Sound:Stop() end)
-
--- [[ 4. NÚT ANIME TOGGLE (FIX MẤT MENU) ]] --
-if CoreGui:FindFirstChild("BananaToggle") then CoreGui.BananaToggle:Destroy() end
-local ToggleGui = Instance.new("ScreenGui", CoreGui)
-ToggleGui.Name = "BananaToggle"
-
-local Btn = Instance.new("ImageButton", ToggleGui)
-Btn.Size, Btn.Position = UDim2.new(0, 65, 0, 65), UDim2.new(0, 15, 0.4, 0)
+-- [[ 3. NÚT ANIME TOGGLE (ĐỔI SANG TÔNG XÁM) ]] --
+if CoreGui:FindFirstChild("KaitoToggle") then CoreGui.KaitoToggle:Destroy() end
+local KaitoGui = Instance.new("ScreenGui", CoreGui)
+KaitoGui.Name = "KaitoToggle"
+local Btn = Instance.new("ImageButton", KaitoGui)
+Btn.Size, Btn.Position = UDim2.new(0, 65, 0, 65), UDim2.new(0, 15, 0.45, 0)
 Btn.Image = "rbxassetid://16045543360"
-Btn.ZIndex = 9999
+Btn.ImageColor3 = Color3.fromRGB(200, 200, 200) -- Làm nút Anime hơi xám lại cho hợp tông
 Instance.new("UICorner", Btn).CornerRadius = UDim.new(1, 0)
+Instance.new("UIStroke", Btn).Color = Color3.fromRGB(100, 100, 100)
 
 local drag, start, startP
 Btn.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.Touch then drag = true start = i.Position startP = Btn.Position end end)
@@ -86,12 +86,6 @@ game:GetService("UserInputService").InputChanged:Connect(function(i) if drag and
     Btn.Position = UDim2.new(startP.X.Scale, startP.X.Offset + d.X, startP.Y.Scale, startP.Y.Offset + d.Y)
 end end)
 Btn.InputEnded:Connect(function() drag = false end)
+Btn.MouseButton1Click:Connect(function() if not drag then Window:Minimize() end end)
 
-Btn.MouseButton1Click:Connect(function()
-    if not drag then
-        -- Gửi phím RightControl để hiện Menu RedZ (Lệnh này cực nhạy)
-        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
-        -- Hiện/Ẩn bảng nhạc
-        MFrame.Visible = not MFrame.Visible
-    end
-end)
+Fluent:Notify({Title = "KAITO HUB", Content = "Đã chuyển sang giao diện Xám Đen!", Duration = 5})
