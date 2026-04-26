@@ -1,1 +1,67 @@
+-- [[ SKIBIDI BANANA PREMIUM - OFFICIAL SOURCE ]] --
+-- [[ REPO: thuytrangdinhdang-dotcom/Skibidi-drfgg ]] --
+
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+
+-- [[ SETTINGS ]] --
+getgenv().Config = {
+    AttackSpeed = 0.1,
+    Team = "Pirates",
+    Rainbow = true
+}
+
+-- [[ CORE FUNCTIONS ]] --
+local function FastAtk(s)
+    task.spawn(function()
+        while task.wait(s) do
+            pcall(function()
+                if _G.AutoFarm or _G.Kaitun then
+                    local CF = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
+                    game:GetService("VirtualUser"):CaptureController()
+                    game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 672))
+                end
+            end)
+        end
+    end)
+end
+
+-- [[ UI INITIALIZE ]] --
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("BANANA HUB PREMIUM", "DarkTheme")
+
+-- TABS
+local MainTab = Window:NewTab("Main Farm")
+local MSection = MainTab:NewSection("CPU: 46.40 ms | GPU: 60.66 ms")
+MSection:NewToggle("Auto Farm (Kaitun)", "Start Farming", function(v)
+    _G.AutoFarm = v
+    if v then 
+        FastAtk(getgenv().Config.AttackSpeed)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"))()
+    end
+end)
+
+local AtkTab = Window:NewTab("Attack Speed")
+AtkTab:NewButton("Skibidi Attack (0.1s)", "God Speed", function() FastAtk(0.1) end)
+
+local SetTab = Window:NewTab("Settings")
+SetTab:NewButton("Switch to Redz UI", "Chuyển UI ngay", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/newredzv3/Scripts/refs/heads/main/main.luau"))({JoinTeam="Pirates"})
+end)
+
+-- [[ ANIME TOGGLE BTN ]] --
+local ScreenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local Btn = Instance.new("ImageButton", ScreenGui)
+Btn.Size = UDim2.new(0, 70, 0, 70)
+Btn.Position = UDim2.new(0, 10, 0.5, 0)
+Btn.Image = "rbxassetid://16045543360"
+Btn.BackgroundTransparency = 0.3
+Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 100)
+local Stroke = Instance.new("UIStroke", Btn)
+Stroke.Thickness = 3
+task.spawn(function()
+    while task.wait() do Stroke.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1) end
+end)
+Btn.MouseButton1Click:Connect(function() game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game) end)
+
+game.StarterGui:SetCore("SendNotification", {Title = "SKIBIDI HUB", Text = "Đã nạp thành công!", Duration = 5})
 
