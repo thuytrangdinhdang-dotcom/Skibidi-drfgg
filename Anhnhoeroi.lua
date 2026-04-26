@@ -1,68 +1,76 @@
--- [[ KAITO HUB - SUPER FAST ATTACK & NO DAME BUG ]] --
--- [[ UI BANANA PREMIUM STYLE - FULL SOUL ALOALOALO322 ]] --
-
+-- [[ KAITO HUB - MARU PREMIUM - BY QQUY 10T ]] --
 repeat task.wait() until game:IsLoaded()
 
--- [[ 1. CONFIG ATTACK (SIÊU NHANH & KHÔNG LỖI) ]] --
-_G.FastAttack = true
-_G.NoDamageBug = true
-_G.AttackDistance = 60
+-- [[ 1. THƯ VIỆN UI MARU PREMIUM ]] --
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x0637/lucy/main/marulib.lua"))()
 
--- [[ 2. LOADING SCREEN KAITO PREMIUM ]] --
+local Window = Library:CreateWindow({
+    Title = "KAITO HUB",
+    SubTitle = "Maru Premium Engine",
+    Footer = "Kaito x Maru Soul",
+    Icon = "rbxassetid://16045543360"
+})
+
+-- [[ 2. THÊM CHỮ "By QQuy 10t" MÀU XANH NHỎ ]] --
 local CoreGui = game:GetService("CoreGui")
-local Screen = Instance.new("ScreenGui", CoreGui)
-local MainLoad = Instance.new("Frame", Screen)
-MainLoad.Size, MainLoad.Position = UDim2.new(0, 320, 0, 100), UDim2.new(0.5, -160, 0.5, -50)
-MainLoad.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Instance.new("UICorner", MainLoad)
-local Bar = Instance.new("Frame", MainLoad)
-Bar.Size, Bar.Position = UDim2.new(0, 0, 0, 5), UDim2.new(0.1, 0, 0.7, 0)
-Bar.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
-local Txt = Instance.new("TextLabel", MainLoad)
-Txt.Size, Txt.Text = UDim2.new(1, 0, 0, 50), "KAITO HUB: FAST ATTACK READY"
-Txt.TextColor3, Txt.BackgroundTransparency = Color3.new(1, 1, 0), 1
-Txt.Font = Enum.Font.GothamBold
+local MainUI = CoreGui:FindFirstChild("MaruLib") or CoreGui:FindFirstChild("KaitoHub")
+if MainUI then
+    local CreditLabel = Instance.new("TextLabel")
+    CreditLabel.Parent = MainUI:FindFirstChildOfClass("Frame") -- Gắn vào khung chính của UI
+    CreditLabel.Name = "QQuyCredit"
+    CreditLabel.Text = "By QQuy 10t"
+    CreditLabel.Size = UDim2.new(0, 100, 0, 20)
+    CreditLabel.Position = UDim2.new(1, -110, 1, -25) -- Góc dưới bên phải
+    CreditLabel.BackgroundTransparency = 1
+    CreditLabel.TextColor3 = Color3.fromRGB(0, 255, 255) -- Màu xanh Cyan nhỏ
+    CreditLabel.TextSize = 12
+    CreditLabel.Font = Enum.Font.GothamBold
+    CreditLabel.TextXAlignment = Enum.TextXAlignment.Right
+end
 
-for i = 1, 100 do task.wait(0.01) Bar.Size = UDim2.new(i/100 * 0.8, 0, 0, 5) end
-Screen:Destroy()
-
--- [[ 3. KÍCH HOẠT LOGIC BANANA GỐC (aloaloalo322) ]] --
+-- [[ 3. LOGIC ĐÁNH SIÊU NHANH (FAST ATTACK MARU) ]] --
+_G.FastAttack = true
 task.spawn(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
-    
-    -- Đổi tên UI Banana sang KAITO HUB
-    task.wait(2)
-    pcall(function()
-        for _, v in pairs(game:GetService("CoreGui"):GetDescendants()) do
-            if v:IsA("TextLabel") and (v.Text == "Banana Hub" or v.Text:find("Banana")) then
-                v.Text = "KAITO HUB"
-            end
-        end
-    end)
-end)
-
--- [[ 4. SCRIPT PHỤ TRỢ FIX DAME (CHẠY SONG SONG) ]] --
-task.spawn(function()
+    local CombatFramework = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
     while task.wait() do
-        if _G.FastAttack then
+        if _G.AutoFarm or _G.FastAttack then
             pcall(function()
-                local Combat = game:GetService("VirtualUser")
-                Combat:CaptureController()
-                Combat:ClickButton1(Vector2.new(851, 158)) -- Giả lập click siêu tốc
+                CombatFramework.activeController.hitboxMagnitude = 60
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", "Melee")
+                game:GetService("VirtualUser"):CaptureController()
+                game:GetService("VirtualUser"):Button1Down(Vector2.new(1280, 672))
             end)
         end
     end
 end)
 
--- [[ 5. TAB NHẠC SÀN (MISIC) ]] --
-local MusicGui = Instance.new("ScreenGui", CoreGui)
-local MBtn = Instance.new("ImageButton", MusicGui)
-MBtn.Size, MBtn.Position = UDim2.new(0, 60, 0, 60), UDim2.new(0, 10, 0.6, 0)
-MBtn.Image = "rbxassetid://16045543360"
-Instance.new("UICorner", MBtn).CornerRadius = UDim.new(1, 0)
+-- [[ 4. CÁC TAB CHỨC NĂNG ]] --
+local MainTab = Window:AddTab("Main", "home")
+local MusicTab = Window:AddTab("Music", "music")
 
+MainTab:AddSection("Auto Farming")
+MainTab:AddToggle("Auto Farm Level", false, function(v) _G.AutoFarm = v end)
+MainTab:AddToggle("Super Fast Attack", true, function(v) _G.FastAttack = v end)
+
+-- Tab Music quẩy nhạc sàn
+MusicTab:AddSection("Kaito Music")
 local Sound = Instance.new("Sound", game.Workspace)
-MBtn.MouseButton1Click:Connect(function()
-    Sound.SoundId = "rbxassetid://1837871155" -- Nhạc sàn mặc định
-    if Sound.IsPlaying then Sound:Stop() else Sound:Play() end
+MusicTab:AddInput("ID Nhạc", function(ID) Sound.SoundId = "rbxassetid://"..ID Sound:Play() end)
+MusicTab:AddButton("Nhạc Sàn Remix", function() Sound.SoundId = "rbxassetid://1837871155" Sound:Play() end)
+MusicTab:AddButton("Dừng Nhạc", function() Sound:Stop() end)
+
+-- [[ 5. NÚT TOGGLE MOBILE ]] --
+if CoreGui:FindFirstChild("KaitoBtn") then CoreGui.KaitoBtn:Destroy() end
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Name = "KaitoBtn"
+local ImageButton = Instance.new("ImageButton", ScreenGui)
+ImageButton.Size = UDim2.new(0, 60, 0, 60)
+ImageButton.Position = UDim2.new(0, 15, 0.45, 0)
+ImageButton.Image = "rbxassetid://16045543360"
+Instance.new("UICorner", ImageButton).CornerRadius = UDim.new(1, 0)
+
+ImageButton.MouseButton1Click:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
 end)
+
+Library:Notification("KAITO HUB", "Đã thêm Credit: By QQuy 10t", 5)
